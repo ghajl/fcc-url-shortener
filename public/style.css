@@ -1,0 +1,39 @@
+/****** Main Styling ******/
+
+body {
+	font-family: 'Roboto', sans-serif;
+	font-size: 16px;
+	color: #222;
+	background-color: #ECF0F1;
+	
+}
+
+.container {
+	padding: 20px;
+	margin-top: 40px;
+}
+
+.footer {
+	margin-top: 60px;
+}
+
+ol {
+	list-style-position: inside;
+  padding-left: 0;
+}
+ul {
+	list-style-type: none;
+  
+}
+code {
+   background-color: rgba(0, 0, 0, .1); 
+}
+a {
+	color: #2574A9;
+}
+/****** Logo Div Styling ******/
+
+img {
+	margin: 20px auto 0 auto;
+	display: block;
+}
