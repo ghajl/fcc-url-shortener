@@ -38,7 +38,8 @@ app.route('/')
     .get(function(req, res) {
 		  res.sendFile(process.cwd() + '/views/index.html');
     })
-app.use('/new',require('./service'));
+app.use('/new',require('./short'));
+app.use(require('./redirect'));
 // Respond not found to all the wrong routes
 app.use(function(req, res, next){
   res.status(404);

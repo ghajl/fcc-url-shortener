@@ -1,25 +1,28 @@
 var express = require('express');
-  // , router = express.Router()
 var app = express();
-
-
 var mongo = require('mongodb').MongoClient;
-var url = process.env.MONGOLAB_URI;
+var dburl = process.env.MONGOLAB_URI;
+var validUrl = require('valid-url');
+  
 
-app.get('/:originalUrl', function (req, res) {	
-  console.log(req.params.originalUrl); 
- mongo.connect(url, function(err, client) {
+app.get('/*', function (req, res) {	
+  
+  console.log(req.params[0]); 
+  
+  if(!validUrl.isWebUri(req.params[0])){
+    res.end(JSON.stringify({error:"wrong Url format"}));
+  }
+ mongo.connect(dburl, function(err, client) {
 
  	if(err) throw err; 
  	var db = client.db('fcc-urlsm');
  	 
- // console.log(obj); 
     db.collection('url', function (err, collection) {
       if(err) throw err;
        var error = false;
        for(var i = 0; i < 100; i++){
          var shortUrl = getRandomInt(1, 10000);
-         var obj = {original: "www.google.com", short: shortUrl};
+         var obj = {original: req.params[0], short: shortUrl};
          
            collection.insert(obj, function(err, response) {
              if(err){
@@ -29,8 +32,7 @@ app.get('/:originalUrl', function (req, res) {
                error = true;
              } else {
                client.close() 
-               res.end(JSON.stringify({short_url:"https://ghajl-fcc-url-shortener.glitch.me/" + shortUrl}));
-               // console.log(i)
+               res.end(JSON.stringify({original_url:req.params[0],short_url:"https://ghajl-fcc-url-shortener.glitch.me/" + shortUrl}));
                error = false;
              }
 
@@ -39,11 +41,13 @@ app.get('/:originalUrl', function (req, res) {
        }
        
     
- })
-})
+    })
   })
+})
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+
 module.exports = app
